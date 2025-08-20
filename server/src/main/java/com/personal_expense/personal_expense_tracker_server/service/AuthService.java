@@ -8,11 +8,15 @@ import com.personal_expense.personal_expense_tracker_server.repository.UserRepos
 import com.personal_expense.personal_expense_tracker_server.security.JwtUtil;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
+
+import java.util.Map;
 
 @Service
 public class AuthService {
@@ -57,10 +61,34 @@ public class AuthService {
         return new LoginResponse(token, user.getEmail(), user.getId(), expiresAt);
     }
 
-    public void logout(@RequestHeader("Authorization") String authHeader) {
-        // Extract token from "Bearer <token>"
-        String token = authHeader.substring(7);
+    public Map<String, String> logout(HttpServletRequest request,
+                                      HttpServletResponse response) {
+        String token = jwtUtil.extractToken(request);
+
+        if (token == null || token.isBlank()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
+            return Map.of("error", "No token found");
+        }
+
+        if (tokenBlacklistService.isBlacklisted(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            return Map.of("error", "Token already revoked");
+        }
+
+        try {
+            String email = jwtUtil.extractEmail(token);
+            if (!jwtUtil.validateToken(token, email)){
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return Map.of("error", "Invalid or expired token");
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 code
+            return Map.of("error", "Invalid token format");
+        }
+
         tokenBlacklistService.add(token);
+        response.setStatus(HttpServletResponse.SC_OK);
+        return Map.of("message", "Logged out successfully");
     }
 
     @Bean

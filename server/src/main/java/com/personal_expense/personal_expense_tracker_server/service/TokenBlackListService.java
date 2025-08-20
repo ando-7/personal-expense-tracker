@@ -21,10 +21,6 @@ public class TokenBlackListService {
         }).start();
     }
 
-    public boolean contains(String token) {
-        return blacklist.contains(token);
-    }
-
     // Check if token is blacklisted
     public boolean isBlacklisted(String token) {
         return blacklist.contains(token);
