@@ -51,7 +51,6 @@ public class User {
     )
     private String email;
 
-
     public User(String firstName, String lastName, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;

@@ -4,12 +4,9 @@ import com.personal_expense.personal_expense_tracker_server.dto.LoginRequest;
 import com.personal_expense.personal_expense_tracker_server.dto.LoginResponse;
 import com.personal_expense.personal_expense_tracker_server.dto.RegisterRequest;
 import com.personal_expense.personal_expense_tracker_server.model.User;
-import com.personal_expense.personal_expense_tracker_server.security.JwtUtil;
 import com.personal_expense.personal_expense_tracker_server.service.AuthService;
-import com.personal_expense.personal_expense_tracker_server.service.TokenBlackListService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
