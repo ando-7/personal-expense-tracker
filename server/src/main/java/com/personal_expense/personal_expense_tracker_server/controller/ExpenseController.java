@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/expenses")
+@RequestMapping("/api/v1/transactions/expenses")
 public class ExpenseController {
 
     private final ExpenseService expenseService;
@@ -21,13 +21,19 @@ public class ExpenseController {
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public List<Expense> getAllExpenses() {
-        return expenseService.getAllExpenses();
+        return expenseService.getAll();
+    }
+
+    @GetMapping("/month/{year}/{month}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Expense> getExpensesByMonth(@PathVariable int year, @PathVariable int month) {
+        return expenseService.filterByMonth(year, month);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Expense getExpenseById(@PathVariable Long id) {
-        return expenseService.getExpenseById(id);
+        return expenseService.getElementById(id);
     }
 
     @PostMapping("")
@@ -42,5 +48,10 @@ public class ExpenseController {
         return expenseService.updateExpense(id, expenseDto);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteExpense(@PathVariable Long id) {
+        expenseService.deleteElementById(id);
+    }
 
 }

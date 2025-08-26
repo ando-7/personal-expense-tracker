@@ -16,7 +16,7 @@ public class Income extends Transaction {
 
     public static class Builder extends Transaction.Builder<Builder> {
 
-        public Builder(double amount) {
+        public Builder(Double amount) {
             super(amount, TransactionType.INCOME);
         }
 

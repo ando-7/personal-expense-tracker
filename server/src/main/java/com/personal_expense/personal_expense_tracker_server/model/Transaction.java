@@ -1,6 +1,5 @@
 package com.personal_expense.personal_expense_tracker_server.model;
 
-import com.personal_expense.personal_expense_tracker_server.enums.ExpenseCategory;
 import com.personal_expense.personal_expense_tracker_server.enums.TransactionType;
 import jakarta.persistence.*;
 
@@ -34,8 +33,13 @@ public abstract class Transaction {
     @Column
     private LocalDate date;
 
-    @Column
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TransactionType type;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
+    private User user;
 
     public String getName() {
         return name;
@@ -73,15 +77,23 @@ public abstract class Transaction {
         return type;
     }
 
-    protected Transaction() {} // JPA
+    public void setType(TransactionType type) {
+        this.type = type;
+    }
 
+    public User getUser() { return user; }
+
+    public void setUser(User user) { this.user = user; }
+
+    protected Transaction() {} // JPA
 
     Transaction(Builder<?> builder) {
         this.name = builder.name;
         this.description = builder.description;
         this.amount = builder.amount;
-        this.type = builder.type;
         this.date = builder.date != null ? builder.date : LocalDate.now();
+        this.user = builder.user;
+        this.type = builder.type;
     }
 
     public static abstract class Builder <T extends Builder<T>>{
@@ -89,11 +101,12 @@ public abstract class Transaction {
         private String description;
         private Double amount;
         private LocalDate date;
-        private final TransactionType type;
+        private User user;
+        private TransactionType type;
 
         public Builder(Double amount, TransactionType type) {
-            this.type = type;
             this.amount = amount;
+            this.type = type;
         }
 
         public T description(String description) {
@@ -108,6 +121,11 @@ public abstract class Transaction {
 
         public T name(String  name) {
             this.name = name;
+            return self();
+        }
+
+        public T user(User user) {
+            this.user = user;
             return self();
         }
 

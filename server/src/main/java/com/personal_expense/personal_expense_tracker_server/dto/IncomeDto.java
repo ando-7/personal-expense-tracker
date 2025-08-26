@@ -13,7 +13,7 @@ public class IncomeDto {
 
     public IncomeDto() {}
 
-    public IncomeDto(Double amount, String name, String description, LocalDate date) {
+    public IncomeDto(Double amount, String name, String description, LocalDate date, Long userId) {
         this.amount = amount;
         this.name = name;
         this.description = description;
@@ -51,4 +51,5 @@ public class IncomeDto {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
 }
