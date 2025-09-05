@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@layer components {
+    .register-login-input {
+        @apply h-10 w-72 my-2 bg-amber-400 rounded-2xl placeholder:text-black text-center text-black;
+    }
+
+    .register-login-box {
+        @apply flex flex-col items-center justify-center w-80 border-amber-300 border-4 rounded-md p-6;
+    }
+}
