@@ -54,4 +54,9 @@ public class ExpenseController {
         expenseService.deleteElementById(id);
     }
 
+    @GetMapping("/total")
+    @ResponseStatus(HttpStatus.OK)
+    public Double totalExpenses() {
+        return expenseService.getTotalSum();
+    }
 }

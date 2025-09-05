@@ -14,7 +14,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Map;
 
@@ -24,11 +23,11 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final TokenBlackListService tokenBlacklistService;
+    private final TokenBlackListService tokenBlackListService;
 
     public AuthService(UserRepository userRepository, TokenBlackListService tokenBlackListService, JwtUtil jwtUtil, TokenBlackListService tokenBlacklistService) {
         this.userRepository = userRepository;
-        this.tokenBlacklistService = tokenBlacklistService;
+        this.tokenBlackListService = tokenBlackListService;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.jwtUtil = jwtUtil;
     }
@@ -70,7 +69,7 @@ public class AuthService {
             return Map.of("error", "No token found");
         }
 
-        if (tokenBlacklistService.isBlacklisted(token)) {
+        if (tokenBlackListService.isBlacklisted(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
             return Map.of("error", "Token already revoked");
         }
@@ -86,7 +85,7 @@ public class AuthService {
             return Map.of("error", "Invalid token format");
         }
 
-        tokenBlacklistService.add(token);
+        tokenBlackListService.add(token);
         response.setStatus(HttpServletResponse.SC_OK);
         return Map.of("message", "Logged out successfully");
     }

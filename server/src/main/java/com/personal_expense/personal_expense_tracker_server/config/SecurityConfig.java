@@ -29,7 +29,7 @@ public class SecurityConfig {
                 }))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**", "/api/v1/users/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/api/v1/users/**", "/api/v1/transactions/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable);

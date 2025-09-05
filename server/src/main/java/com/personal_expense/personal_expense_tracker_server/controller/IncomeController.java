@@ -55,4 +55,10 @@ public class IncomeController {
         incomeService.deleteElementById(id);
     }
 
+    @GetMapping("/total")
+    @ResponseStatus(HttpStatus.OK)
+    public Double totalIncome() {
+        return incomeService.getTotalSum();
+    }
+
 }

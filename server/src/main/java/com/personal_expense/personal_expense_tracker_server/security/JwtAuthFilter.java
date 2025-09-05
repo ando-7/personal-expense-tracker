@@ -32,9 +32,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String token = jwtUtil.extractToken(request);
 
-        if(token != null){
+        if(token != null && !token.isBlank()){
             if(tokenBlackListService.isBlacklisted(token)){
-                response.sendError(HttpStatus.UNAUTHORIZED.value(), "Token revoked");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
 

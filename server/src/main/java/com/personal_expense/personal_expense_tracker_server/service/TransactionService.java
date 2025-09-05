@@ -1,5 +1,6 @@
 package com.personal_expense.personal_expense_tracker_server.service;
 
+import com.personal_expense.personal_expense_tracker_server.enums.TransactionType;
 import com.personal_expense.personal_expense_tracker_server.model.Expense;
 import com.personal_expense.personal_expense_tracker_server.model.Transaction;
 import com.personal_expense.personal_expense_tracker_server.model.User;
@@ -70,6 +71,10 @@ public abstract class TransactionService <T extends Transaction> {
         return repository.findByUserAndDateBetween(user,
                 yearMonth.atDay(1),
                 yearMonth.atEndOfMonth());
+    }
+
+    public Double getTotalSum(){
+        return getAll().stream().mapToDouble(Transaction::getAmount).sum();
     }
 
 }

@@ -2,6 +2,7 @@ package com.personal_expense.personal_expense_tracker_server.service;
 
 import com.personal_expense.personal_expense_tracker_server.dto.IncomeDto;
 import com.personal_expense.personal_expense_tracker_server.model.Income;
+import com.personal_expense.personal_expense_tracker_server.model.Transaction;
 import com.personal_expense.personal_expense_tracker_server.model.User;
 import com.personal_expense.personal_expense_tracker_server.repository.IncomeRepository;
 import com.personal_expense.personal_expense_tracker_server.repository.UserRepository;
@@ -47,6 +48,5 @@ public class IncomeService extends TransactionService<Income> {
         income.setAmount(incomeDto.getAmount());
 
         return incomeRepository.save(income);
-
     }
 }
